@@ -1,21 +1,19 @@
 #!/bin/sh
-echo
-echo "Universal Shell DEC 5.1"
+echo ""
+echo "Universal Shell DEC 5.2"
 dec() {
-  cp "$1" "$(pwd)/$shuf.temp1.sh"
-  chmod +x "$(pwd)/$shuf.temp1.sh"
   if grep -e 'eval' -e 'base64 -d' -e '" | sh' "$(pwd)/$shuf.temp1.sh"; then
     while true; do
       if grep eval "$(pwd)/$shuf.temp1.sh"; then
-        sed 's/eval "\$/echo "\$/g' "$(pwd)/$shuf.temp1.sh" > "$(pwd)/$shuf.temp2.sh"
+        sed 's/eval "\$/echo "\$/g; s/\[ "$(id -u)" -ne 2000 \]/! true/' "$(pwd)/$shuf.temp1.sh" > "$(pwd)/$shuf.temp2.sh"
         bash "$(pwd)/$shuf.temp2.sh" > "$(pwd)/$shuf.temp1.sh"
         rm "$(pwd)/$shuf.temp2.sh"
       elif grep "base64 -d" "$(pwd)/$shuf.temp1.sh"; then
-        sed 's/| sh$//' "$(pwd)/$shuf.temp1.sh" > "$(pwd)/$shuf.temp2.sh"
+        sed 's/| sh$//; s/\[ "$(id -u)" -ne 2000 \]/! true/' "$(pwd)/$shuf.temp1.sh" > "$(pwd)/$shuf.temp2.sh"
         bash "$(pwd)/$shuf.temp2.sh" > "$(pwd)/$shuf.temp1.sh"
         rm "$(pwd)/$shuf.temp2.sh"
         elif grep '" | sh' "$(pwd)/$shuf.temp1.sh"; then
-        sed 's/" | sh/" > "$(pwd)\/temp1.sh"/g' "$(pwd)/$shuf.temp1.sh" > "$(pwd)/$shuf.temp2.sh"
+        sed "s/\" | sh/\" > \"\$(pwd)\/$shuf.temp1.sh\"/g; s/\[ "$(id -u)" -ne 2000 \]/! true/" "$(pwd)/$shuf.temp1.sh" > "$(pwd)/$shuf.temp2.sh"
         bash "$(pwd)/$shuf.temp2.sh"
         rm "$(pwd)/$shuf.temp2.sh"
       else
@@ -41,10 +39,10 @@ else
  }
 echo ""
 echo "Example:"
-  echo "Single Input is a file"
-  echo "/sdcard/in/example.sh"
-  echo "Multi Input is a directory"
-  echo "/sdcard/in"
+echo "Single Input is a file"
+echo "/sdcard/in/example.sh"
+echo "Multi Input is a directory"
+echo "/sdcard/in"
 echo ""
 printf "Enter the location: "
 read -r input
@@ -61,8 +59,10 @@ if [ -z "$(find "$input" -maxdepth 1 -type f)" ]; then
 fi
 
 find "$input" -maxdepth 1 -type f | while IFS= read -r file; do
+  cp "$file" "$(pwd)/$shuf.temp1.sh"
+  chmod +x "$(pwd)/$shuf.temp1.sh"
   echo "Decrypting $(basename "$file")"
-  dec "$file" > /dev/null 2>&1
+  dec >/dev/null 2>&1
   if [ -s "$(pwd)/$shuf.temp1.sh" ]; then
   mv "$(pwd)/$shuf.temp1.sh" "$file"
   echo "Success: Decryption of $(basename "$file") completed."
@@ -71,3 +71,4 @@ find "$input" -maxdepth 1 -type f | while IFS= read -r file; do
   rm "$(pwd)/$shuf.temp1.sh"
   fi
 done
+echo ""
