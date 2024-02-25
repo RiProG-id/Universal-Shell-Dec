@@ -1,6 +1,6 @@
 #!/bin/sh
 echo
-echo "Universal Shell DEC 5.0"
+echo "Universal Shell DEC 5.1"
 dec() {
   cp "$1" "$(pwd)/$shuf.temp1.sh"
   chmod +x "$(pwd)/$shuf.temp1.sh"
@@ -41,10 +41,12 @@ else
  }
 echo ""
 echo "Example:"
-  echo "single /sdcard/in/example.sh"
-  echo "multi /sdcard/in/*"
+  echo "Single Input is a file"
+  echo "/sdcard/in/example.sh"
+  echo "Multi Input is a directory"
+  echo "/sdcard/in"
 echo ""
-printf "Enter the file location: "
+printf "Enter the location: "
 read -r input
 find=$(find "$input") > /dev/null 2>&1
 if [ -z "$find" ]; then
@@ -53,7 +55,12 @@ if [ -z "$find" ]; then
 fi
 shuf=$(shuf -i 1-100 -n 1)
 echo ""
-for file in "$input"; do
+if [ -z "$(find "$input" -maxdepth 1 -type f)" ]; then
+  echo "Warning: Input not found."
+  exit 1
+fi
+
+find "$input" -maxdepth 1 -type f | while IFS= read -r file; do
   echo "Decrypting $(basename "$file")"
   dec "$file" > /dev/null 2>&1
   if [ -s "$(pwd)/$shuf.temp1.sh" ]; then
