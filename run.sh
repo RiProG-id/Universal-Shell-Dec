@@ -1,6 +1,6 @@
 #!/bin/bash
 echo ""
-echo "Universal Shell DEC 5.4"
+echo "Universal Shell DEC 5.5"
 dec() {
   if grep -e 'eval' -e 'base64 -d' -e '" | sh' "$(pwd)/$shuf.temp1.sh"; then
     while true; do
@@ -22,7 +22,7 @@ dec() {
     done
 else
   for sec in $(seq 1 16); do
-  "$(pwd)/$shuf.temp1.sh" > /dev/null 2>&1 &
+ "$(pwd)/$shuf.temp1.sh" > /dev/null 2>&1 &
   child=$!
   sleep 0.0"$sec"
   kill -STOP $child
@@ -32,8 +32,8 @@ else
       if [ -s "$(pwd)/$shuf.temp2.sh" ]; then
       break
       fi
-      mv "$(pwd)/$shuf.temp2.sh" "$(pwd)/$shuf.temp1.sh"
     done
+    mv "$(pwd)/$shuf.temp2.sh" "$(pwd)/$shuf.temp1.sh"
   fi
   echo ""
  }
@@ -62,6 +62,9 @@ find "$input" -maxdepth 1 -type f | while IFS= read -r file; do
   chmod +x "$(pwd)/$shuf.temp1.sh"
   echo "Decrypting $(basename "$file")"
   dec > /dev/null 2>&1
+  if grep -e 'eval' -e 'base64 -d' -e '" | sh' "$(pwd)/$shuf.temp1.sh"; then
+  dec > /dev/null 2>&1
+  fi
   if [ -s "$(pwd)/$shuf.temp1.sh" ]; then
   mv "$(pwd)/$shuf.temp1.sh" "$file"
   echo "Success: Decryption of $(basename "$file") completed."
