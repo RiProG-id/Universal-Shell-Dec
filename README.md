@@ -32,3 +32,8 @@ This is a simple program designed to decrypt shell scripts using various methods
    ```sh
    curl https://raw.githubusercontent.com/RiProG-id/Universal-Shell-Dec/main/run.sh > run.sh; bash run.sh; rm run.sh
    ```
+
+## Support Me
+
+- **PayPal:** [Donate](https://paypal.me/RiProG?country.x=ID&locale.x=id_ID)
+- **Saweria:** [Donate](https://saweria.co/RiProG)
