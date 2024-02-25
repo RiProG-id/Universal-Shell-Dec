@@ -1,4 +1,4 @@
-# Universal Shell DEC 5.0
+# Universal Shell DEC
 
 This is a simple program designed to decrypt shell scripts using various methods.
 
