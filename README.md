@@ -16,7 +16,7 @@ This is a simple program designed to decrypt shell scripts using various methods
 
 ## Usage:
 
-1. Update and upgrade Termux packages:
+1. Update and upgrade packages:
    
    ```sh
    apt update -y && apt upgrade -y
@@ -37,3 +37,9 @@ This is a simple program designed to decrypt shell scripts using various methods
 
 - **PayPal:** [Donate](https://paypal.me/RiProG?country.x=ID&locale.x=id_ID)
 - **Saweria:** [Donate](https://saweria.co/RiProG)
+
+
+## Credit
+
+- **GitHub:** [deshc](https://github.com/kawaii-ghost/deshc)
+- **GitHub:** [deval](https://github.com/kawaii-ghost/deshc)
