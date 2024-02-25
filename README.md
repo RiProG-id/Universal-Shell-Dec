@@ -7,8 +7,8 @@ This is a simple program designed to decrypt shell scripts using various methods
 - Shc
 - Base64
 - Eval
-- Shc + Base64
-- Shc + Eval
+- Base64 + Shc
+- Eval + Shc
 - Base64 + Base64
 - Eval + Base64
 - Base64 + Eval + Base64
