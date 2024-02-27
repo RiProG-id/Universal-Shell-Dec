@@ -1,6 +1,6 @@
 #!/bin/bash
 echo ""
-echo "Universal Shell DEC 5.6"
+echo "Universal Shell DEC 6.0"
 dec() {
   if grep -q -e 'eval' -e 'base64 -d' -e '" | sh' "$(pwd)/$shuf.temp1.sh"; then
     while true; do
@@ -22,14 +22,16 @@ dec() {
     done
 else
   for sec in $(seq 1 16); do
- "$(pwd)/$shuf.temp1.sh" > /dev/null 2>&1 &
+  exec="$(pwd)/$shuf.temp1.sh"
+  $exec > /dev/null 2>&1 &
   child=$!
   sleep 0.0"$sec"
   kill -STOP $child
   cmdline=$(cat /proc/$child/cmdline)
-  echo "$cmdline" | sed 's/.*\(#\)/\1/; $d' > "$(pwd)/$shuf.temp2.sh"
+  cmdcount=$(echo "$exec" | wc -c)
+  cat "$cmdline" | sed 's/.*\(#!\)/\1/' | head -c "-$cmdcount" | sed 's/.*\(#\)/\1/; $d' > "$(pwd)/$shuf.temp2.sh"
       kill -TERM $child
-      if [ -s "$(pwd)/$shuf.temp2.sh" ]; then
+      if grep -q '#!/' then
       break
       fi
     done
@@ -46,17 +48,13 @@ echo "/sdcard/in"
 echo ""
 printf "Enter the location: "
 read -r input
-find=$(find "$input") > /dev/null 2>&1
-if [ -z "$find" ]; then
-  echo "Warning: Input not found."
-  exit 1
-fi
 shuf=$(shuf -i 1-100 -n 1)
 echo ""
 if [ -z "$(find "$input" -maxdepth 1 -type f)" ]; then
   echo "Warning: Input not found."
   exit 1
 fi
+
 find "$input" -maxdepth 1 -type f | while IFS= read -r file; do
   cp "$file" "$(pwd)/$shuf.temp1.sh"
   chmod +x "$(pwd)/$shuf.temp1.sh"
