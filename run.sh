@@ -23,7 +23,7 @@ dec() {
 else
   for sec in $(seq 1 16); do
   exec="$(pwd)/$shuf.temp1.sh"
-  $exec > /dev/null 2>&1 &
+  "$exec" > /dev/null 2>&1 &
   child=$!
   sleep 0.0"$sec"
   kill -STOP $child
@@ -31,11 +31,11 @@ else
   cmdcount=$(echo "$exec" | wc -c)
   cat "$cmdline" | sed 's/.*\(#!\)/\1/' | head -c "-$cmdcount" | sed 's/.*\(#\)/\1/; $d' > "$(pwd)/$shuf.temp2.sh"
       kill -TERM $child
-      if grep -q '#!/' then
+      if grep -q '#!/' "$(pwd)/$shuf.temp2.sh"; then
       break
       fi
     done
-    mv "$(pwd)/$shuf.temp2.sh" "$(pwd)/$shuf.temp1.sh"
+    mv " "$(pwd)/$shuf.temp1.sh"
   fi
   echo ""
  }
