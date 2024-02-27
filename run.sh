@@ -2,13 +2,13 @@
 echo ""
 echo "Universal Shell DEC 6.0"
 dec() {
-  if grep -q -e 'eval' -e 'base64 -d' -e '" | sh' "$(pwd)/$shuf.temp1.sh"; then
+  if grep -q -e 'eval' -e 'base64 -d | sh$' -e '" | sh' "$(pwd)/$shuf.temp1.sh"; then
     while true; do
       if grep eval "$(pwd)/$shuf.temp1.sh"; then
         sed 's/eval "\$/echo "\$/g; s/\[ "$(id -u)" -ne 2000 \]/! true/' "$(pwd)/$shuf.temp1.sh" > "$(pwd)/$shuf.temp2.sh"
         bash "$(pwd)/$shuf.temp2.sh" > "$(pwd)/$shuf.temp1.sh"
         rm "$(pwd)/$shuf.temp2.sh"
-      elif grep -q "base64 -d" "$(pwd)/$shuf.temp1.sh"; then
+      elif grep -q 'base64 -d | sh$' "$(pwd)/$shuf.temp1.sh"; then
         sed 's/base64 -d | sh/base64 -d/; s/\[ "$(id -u)" -ne 2000 \]/! true/' "$(pwd)/$shuf.temp1.sh" > "$(pwd)/$shuf.temp2.sh"
         bash "$(pwd)/$shuf.temp2.sh" > "$(pwd)/$shuf.temp1.sh"
         rm "$(pwd)/$shuf.temp2.sh"
@@ -60,7 +60,7 @@ find "$input" -maxdepth 1 -type f | while IFS= read -r file; do
   chmod +x "$(pwd)/$shuf.temp1.sh"
   echo "Decrypting $(basename "$file")"
   dec > /dev/null 2>&1
-  if grep -q -e 'eval' -e 'base64 -d' -e '" | sh' "$(pwd)/$shuf.temp1.sh"; then
+  if grep -q -e 'eval' -e 'base64 -d | sh$' -e '" | sh' "$(pwd)/$shuf.temp1.sh"; then
   dec > /dev/null 2>&1
   fi
   if [ -s "$(pwd)/$shuf.temp1.sh" ]; then
