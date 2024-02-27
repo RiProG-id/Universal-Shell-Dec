@@ -29,13 +29,13 @@ else
   kill -STOP $child
   cmdline=$(cat /proc/$child/cmdline)
   cmdcount=$(echo "$exec" | wc -c)
-  cat "$cmdline" | sed 's/.*\(#!\)/\1/' | head -c "-$cmdcount" | sed 's/.*\(#\)/\1/; $d' > "$(pwd)/$shuf.temp2.sh"
+  echo "$cmdline" | sed 's/.*\(#!\)/\1/' | head -c "-$cmdcount" > "$(pwd)/$shuf.temp2.sh"
       kill -TERM $child
       if grep -q '#!/' "$(pwd)/$shuf.temp2.sh"; then
       break
       fi
     done
-    mv " "$(pwd)/$shuf.temp1.sh"
+    mv "$(pwd)/$shuf.temp2.sh" "$(pwd)/$shuf.temp1.sh"
   fi
   echo ""
  }
