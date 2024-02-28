@@ -22,21 +22,21 @@ dec() {
     done
 else
   for sec in $(seq 1 16); do
-  exec="$(pwd)/$shuf.temp1.sh"
-  "$exec" > /dev/null 2>&1 &
-  child=$!
-  sleep 0.0"$sec"
-  kill -STOP $child
-  cmdline=$(cat /proc/$child/cmdline)
-  echo "$cmdline" | sed 's/.*\(#!\)/\1/' | head -c "-$(echo "$exec" | wc -c)" > "$(pwd)/$shuf.temp2.sh"
-      kill -TERM $child
-      if grep -q '#!/' "$(pwd)/$shuf.temp2.sh"; then
+    exec="$(pwd)/$shuf.temp1.sh"
+    "$exec" > /dev/null 2>&1 &
+    child=$!
+    sleep 0.0"$sec"
+    kill -STOP $child
+    cmdline=$(cat /proc/$child/cmdline)
+    echo "$cmdline" | sed 's/.*\(#!\)/\1/' | head -c "-$(echo "$exec" | wc -c)" > "$(pwd)/$shuf.temp2.sh"
+    kill -TERM $child
+    if grep -q '#!/' "$(pwd)/$shuf.temp2.sh"; then
       break
-      else
-      rm "$(pwd)/$shuf.temp2.sh"
-      touch "$(pwd)/$shuf.temp2.sh"
-      fi
-    done
+    else
+    rm "$(pwd)/$shuf.temp2.sh"
+    touch "$(pwd)/$shuf.temp2.sh"
+    fi
+  done
     mv "$(pwd)/$shuf.temp2.sh" "$(pwd)/$shuf.temp1.sh"
   fi
   echo ""
