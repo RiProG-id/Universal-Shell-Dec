@@ -28,8 +28,7 @@ else
   sleep 0.0"$sec"
   kill -STOP $child
   cmdline=$(cat /proc/$child/cmdline)
-  cmdcount=$(echo "$exec" | wc -c)
-  echo "$cmdline" | sed 's/.*\(#!\)/\1/' | head -c "-$cmdcount" > "$(pwd)/$shuf.temp2.sh"
+  echo "$cmdline" | sed 's/.*\(#!\)/\1/' | head -c "-$(echo "$exec" | wc -c)" > "$(pwd)/$shuf.temp2.sh"
       kill -TERM $child
       if grep -q '#!/' "$(pwd)/$shuf.temp2.sh"; then
       break
