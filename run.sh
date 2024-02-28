@@ -1,4 +1,5 @@
 #!/bin/bash
+ulimit -s unlimited >/dev/null 2>&1
 echo ""
 echo "Universal Shell DEC 6.5"
 dec() {
