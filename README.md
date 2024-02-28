@@ -15,6 +15,7 @@ This is a simple program designed to decrypt shell scripts using various methods
 - Eval + Base64 + Eval
 - Random eval
 - Random Base64
+- Random Hash
 
 ## Usage:
 
