@@ -1,7 +1,7 @@
 #!/bin/bash
 ulimit -s unlimited >/dev/null 2>&1
 echo ""
-echo "Universal Shell DEC 6.8"
+echo "Universal Shell DEC 6.9"
 dec() {
   if grep -q -e '=.*;.*=.*;' -e 'base64 -d | sh$' -e '" | sh' -e '*#*#*#*#*#*#*#*#*#*#*#*' "$(pwd)/$shuf.temp1.sh"; then
     while true; do
@@ -10,16 +10,17 @@ dec() {
         bash "$(pwd)/$shuf.temp2.sh" > "$(pwd)/$shuf.temp1.sh"
         rm "$(pwd)/$shuf.temp2.sh"
       elif grep -q 'base64 -d | sh$' "$(pwd)/$shuf.temp1.sh"; then
-      sed 's/base64 -d | sh/base64 -d/; s/\[ "$(id -u)" -ne 2000 \]/! true/' "$(pwd)/$shuf.temp1.sh" > "$(pwd)/$shuf.temp2.sh"
-      bash "$(pwd)/$shuf.temp2.sh" > "$(pwd)/$shuf.temp1.sh"
-      rm "$(pwd)/$shuf.temp2.sh"
+        sed 's/base64 -d | sh/base64 -d/; s/\[ "$(id -u)" -ne 2000 \]/! true/' "$(pwd)/$shuf.temp1.sh" > "$(pwd)/$shuf.temp2.sh"
+        bash "$(pwd)/$shuf.temp2.sh" > "$(pwd)/$shuf.temp1.sh"
+        rm "$(pwd)/$shuf.temp2.sh"
       elif grep -q '" | sh' "$(pwd)/$shuf.temp1.sh"; then
-      sed 's/\" | sh/\" > \"\$(pwd)\/$shuf.temp1.sh\"/g; s/\[ "$(id -u)" -ne 2000 \]/! true/" "$(pwd)/$shuf.temp1.sh' > "$(pwd)/$shuf.temp2.sh"
-      bash "$(pwd)/$shuf.temp2.sh"
-      rm "$(pwd)/$shuf.temp2.sh"
+        sed 's/\" | sh/\" > \"\$(pwd)\/$shuf.temp1.sh\"/g; s/\[ "$(id -u)" -ne 2000 \]/! true/" "$(pwd)/$shuf.temp1.sh' > "$(pwd)/$shuf.temp2.sh"
+        bash "$(pwd)/$shuf.temp2.sh"
+        rm "$(pwd)/$shuf.temp2.sh"
       elif grep -q '*#*#*#*#*#*#*#*#*#*#*#*' "$(pwd)/$shuf.temp1.sh"; then
-      cat "$(pwd)/$shuf.temp2.sh" | grep -v '#####' > "$(pwd)/$shuf.temp1.sh"
-      rm "$(pwd)/$shuf.temp2.sh"
+        cp "$(pwd)/$shuf.temp1.sh" "$(pwd)/$shuf.temp2.sh"
+        cat "$(pwd)/$shuf.temp2.sh" | grep -v '#####' > "$(pwd)/$shuf.temp1.sh"
+        rm "$(pwd)/$shuf.temp2.sh"
       else
         break
       fi
