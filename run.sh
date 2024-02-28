@@ -20,7 +20,7 @@ dec() {
         rm "$(pwd)/$shuf.temp2.sh"
       elif grep -q "$pattern" "$(pwd)/$shuf.temp1.sh"; then
         cp "$(pwd)/$shuf.temp1.sh" "$(pwd)/$shuf.temp2.sh"
-        cat "$(pwd)/$shuf.temp2.sh" | grep -v '#####' > "$(pwd)/$shuf.temp1.sh"
+        cat "$(pwd)/$shuf.temp2.sh" | grep -v '###########################################################' > "$(pwd)/$shuf.temp1.sh"
         rm "$(pwd)/$shuf.temp2.sh"
       else
         break
