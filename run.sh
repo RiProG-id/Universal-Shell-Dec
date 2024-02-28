@@ -38,8 +38,8 @@ else
     if grep -q '#!/' "$(pwd)/$shuf.temp2.sh"; then
       break
     else
-    rm "$(pwd)/$shuf.temp2.sh"
-    touch "$(pwd)/$shuf.temp2.sh"
+      rm "$(pwd)/$shuf.temp2.sh"
+      touch "$(pwd)/$shuf.temp2.sh"
     fi
   done
 fi
