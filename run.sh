@@ -1,6 +1,6 @@
 #!/bin/bash
 echo ""
-echo "Universal Shell DEC 6.4"
+echo "Universal Shell DEC 6.5"
 dec() {
   if grep -q -e 'z="' -e 'base64 -d | sh$' -e '" | sh' "$(pwd)/$shuf.temp1.sh"; then
     while true; do
