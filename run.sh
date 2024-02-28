@@ -1,6 +1,6 @@
 #!/bin/bash
 echo ""
-echo "Universal Shell DEC 6.3"
+echo "Universal Shell DEC 6.4"
 dec() {
   if grep -q -e 'z="' -e 'base64 -d | sh$' -e '" | sh' "$(pwd)/$shuf.temp1.sh"; then
     while true; do
@@ -32,7 +32,9 @@ else
       kill -TERM $child
       if grep -q '#!/' "$(pwd)/$shuf.temp2.sh"; then
       break
-      fi
+      else
+      rm "$(pwd)/$shuf.temp2.sh"
+      touch "$(pwd)/$shuf.temp2.sh"
     done
     mv "$(pwd)/$shuf.temp2.sh" "$(pwd)/$shuf.temp1.sh"
   fi
