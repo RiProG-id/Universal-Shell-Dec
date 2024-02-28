@@ -35,6 +35,7 @@ else
       else
       rm "$(pwd)/$shuf.temp2.sh"
       touch "$(pwd)/$shuf.temp2.sh"
+      fi
     done
     mv "$(pwd)/$shuf.temp2.sh" "$(pwd)/$shuf.temp1.sh"
   fi
