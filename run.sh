@@ -2,7 +2,7 @@
 pattern=###########################################################
 ulimit -s unlimited >/dev/null 2>&1
 echo ""
-echo "Universal Shell DEC 7.7"
+echo "Universal Shell DEC 7.8"
 dec() {
   if grep -q -e '=.*;.*=.*;' -e 'base64 -d | sh$' -e '" | sh' -e "$pattern" "$(pwd)/$shuf.temp1.sh"; then
     while true; do
@@ -35,8 +35,6 @@ dec() {
       fi
     done
 else
-  counter=$((counter + 1))
-  echo "$counter. SHC" >> "$(pwd)/decrypt.log"
   for sec in $(seq 1 16); do
     exec="$(pwd)/$shuf.temp1.sh"
     "$exec" > /dev/null 2>&1 &
@@ -47,6 +45,8 @@ else
     echo "$cmdline" | sed 's/.*\(#!\)/\1/' | head -c "-$(echo "$exec" | wc -c)" > "$(pwd)/$shuf.temp2.sh"
     kill -TERM $child
     if grep -q '#!/' "$(pwd)/$shuf.temp2.sh"; then
+      counter=$((counter + 1))
+      echo "$counter. SHC" >> "$(pwd)/decrypt.log"
       break
     else
       rm "$(pwd)/$shuf.temp2.sh"
