@@ -2,7 +2,7 @@
 pattern=false
 ulimit -s unlimited >/dev/null 2>&1
 echo ""
-echo "Universal Shell DEC 8.5"
+echo "Universal Shell DEC 8.6"
 dec() {
   if grep -q -e '=.*;.*=.*;' -e 'base64 -d | sh$' -e '" | sh' -e '^#[[:print:]]\{50,\}' "$(pwd)/$shuf.temp1.sh"; then
     while true; do
@@ -94,7 +94,7 @@ find "$input" -maxdepth 1 -type f | while IFS= read -r file; do
   fi
 done
 echo ""
-if [ "$pattern" = true]; then
+if [ "$pattern" = true ]; then
   echo " Warning: Decryption pattern mode used. Some code comments may be lost."
   echo ""
 fi
