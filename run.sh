@@ -1,11 +1,12 @@
 #!/bin/bash
+pattern=false
 ulimit -s unlimited >/dev/null 2>&1
 echo ""
-echo "Universal Shell DEC 8.1"
+echo "Universal Shell DEC 8.5"
 dec() {
-  if grep -q -e '=.*;.*=.*;' -e 'base64 -d | sh$' -e '" | sh' "$(pwd)/$shuf.temp1.sh" || [ "$(cat "$(pwd)/$shuf.temp1.sh" | grep -o "#" | wc -l)" -gt 25 ]; then
+  if grep -q -e '=.*;.*=.*;' -e 'base64 -d | sh$' -e '" | sh' -e '^#[[:print:]]\{50,\}' "$(pwd)/$shuf.temp1.sh"; then
     while true; do
-      if grep '=.*;.*=.*;' "$(pwd)/$shuf.temp1.sh"; then
+      if grep -q '=.*;.*=.*;' "$(pwd)/$shuf.temp1.sh"; then
         counter=$((counter + 1))
         echo "$counter. Eval" >> "$(pwd)/decrypt.log"
         sed 's/eval "\$/echo "\$/g; s/\[ "$(id -u)" -ne 2000 \]/! true/' "$(pwd)/$shuf.temp1.sh" > "$(pwd)/$shuf.temp2.sh"
@@ -23,12 +24,13 @@ dec() {
         sed 's/\" | sh/\" > \"\$(pwd)\/$shuf.temp1.sh\"/g; s/\[ "$(id -u)" -ne 2000 \]/! true/" "$(pwd)/$shuf.temp1.sh' > "$(pwd)/$shuf.temp2.sh"
         bash "$(pwd)/$shuf.temp2.sh"
         rm "$(pwd)/$shuf.temp2.sh"
-      elif [ "$(cat "$(pwd)/$shuf.temp1.sh" | grep -o "#" | wc -l)" -gt 50 ]; then
+      elif grep -q '^#[[:print:]]\{50,\}' "$(pwd)/$shuf.temp1.sh"; then
         counter=$((counter + 1))
         echo "$counter. Pattern" >> "$(pwd)/decrypt.log"
         cp "$(pwd)/$shuf.temp1.sh" "$(pwd)/$shuf.temp2.sh"
-        cat "$(pwd)/$shuf.temp2.sh" | grep -v '###########################################################' > "$(pwd)/$shuf.temp1.sh"
+        cat "$(pwd)/$shuf.temp2.sh" | grep -v '^#[[:print:]]\{50,\}' > "$(pwd)/$shuf.temp1.sh"
         rm "$(pwd)/$shuf.temp2.sh"
+        pattern=true
       else
         break
       fi
@@ -71,7 +73,6 @@ if [ -z "$(find "$input" -maxdepth 1 -type f)" ]; then
   echo "Warning: Input not found."
   exit 1
 fi
-
 find "$input" -maxdepth 1 -type f | while IFS= read -r file; do
   counter=0
   touch "$(pwd)/decrypt.log"
@@ -79,10 +80,9 @@ find "$input" -maxdepth 1 -type f | while IFS= read -r file; do
   chmod +x "$(pwd)/$shuf.temp1.sh"
   echo "Decrypting $(basename "$file")"
   dec > /dev/null 2>&1
-  if grep -q -e '=.*;.*=.*;' -e 'base64 -d | sh$' -e '" | sh' "$(pwd)/$shuf.temp1.sh" || [ "$(cat "$(pwd)/$shuf.temp1.sh" | grep -o "#" | wc -l)" -gt 25 ]; then
+  if grep -q -e '=.*;.*=.*;' -e 'base64 -d | sh$' -e '" | sh' -e '^#[[:print:]]\{50,\}' "$(pwd)/$shuf.temp1.sh"; then
     dec > /dev/null 2>&1
   fi
-  
   cat "$(pwd)/decrypt.log"
   rm "$(pwd)/decrypt.log"
   if [ -s "$(pwd)/$shuf.temp1.sh" ]; then
@@ -94,3 +94,7 @@ find "$input" -maxdepth 1 -type f | while IFS= read -r file; do
   fi
 done
 echo ""
+if [ "$pattern" = true]; then
+  echo " Warning: Decryption pattern mode used. Some code comments may be lost."
+  echo ""
+fi
