@@ -1,9 +1,9 @@
 #!/bin/bash
 ulimit -s unlimited >/dev/null 2>&1
 echo ""
-echo "Universal Shell DEC 8.0"
+echo "Universal Shell DEC 8.1"
 dec() {
-  if grep -q -e '=.*;.*=.*;' -e 'base64 -d | sh$' -e '" | sh' -e "$pattern" "$(pwd)/$shuf.temp1.sh"; then
+  if grep -q -e '=.*;.*=.*;' -e 'base64 -d | sh$' -e '" | sh' "$(pwd)/$shuf.temp1.sh" || [ "$(cat "$(pwd)/$shuf.temp1.sh" | grep -o "#" | wc -l)" -gt 25 ]; then
     while true; do
       if grep '=.*;.*=.*;' "$(pwd)/$shuf.temp1.sh"; then
         counter=$((counter + 1))
@@ -23,7 +23,7 @@ dec() {
         sed 's/\" | sh/\" > \"\$(pwd)\/$shuf.temp1.sh\"/g; s/\[ "$(id -u)" -ne 2000 \]/! true/" "$(pwd)/$shuf.temp1.sh' > "$(pwd)/$shuf.temp2.sh"
         bash "$(pwd)/$shuf.temp2.sh"
         rm "$(pwd)/$shuf.temp2.sh"
-      elif [ "$(cat nama_file | grep -o "#" | wc -l)" -gt 50 ]; then
+      elif [ "$(cat "$(pwd)/$shuf.temp1.sh" | grep -o "#" | wc -l)" -gt 50 ]; then
         counter=$((counter + 1))
         echo "$counter. Pattern" >> "$(pwd)/decrypt.log"
         cp "$(pwd)/$shuf.temp1.sh" "$(pwd)/$shuf.temp2.sh"
@@ -77,10 +77,9 @@ find "$input" -maxdepth 1 -type f | while IFS= read -r file; do
   touch "$(pwd)/decrypt.log"
   cp "$file" "$(pwd)/$shuf.temp1.sh"
   chmod +x "$(pwd)/$shuf.temp1.sh"
-  pattern=$(cat nama_file | grep -o "#" | wc -l)
   echo "Decrypting $(basename "$file")"
   dec > /dev/null 2>&1
-  if grep -q -e '=.*;.*=.*;' -e 'base64 -d | sh$' -e '" | sh' "$(pwd)/$shuf.temp1.sh" || [ "$(cat nama_file | grep -o "#" | wc -l)" -gt 25 ]; then
+  if grep -q -e '=.*;.*=.*;' -e 'base64 -d | sh$' -e '" | sh' "$(pwd)/$shuf.temp1.sh" || [ "$(cat "$(pwd)/$shuf.temp1.sh" | grep -o "#" | wc -l)" -gt 25 ]; then
     dec > /dev/null 2>&1
   fi
   
