@@ -2,9 +2,9 @@
 pattern=false
 ulimit -s unlimited >/dev/null 2>&1
 echo ""
-echo "Universal Shell DEC 8.6"
+echo "Universal Shell DEC 8.7"
 dec() {
-  if grep -q -e '=.*;.*=.*;' -e 'base64 -d | sh$' -e '" | sh' -e '^#[[:print:]]\{50,\}' "$(pwd)/$shuf.temp1.sh"; then
+  if grep -q -e '=.*;.*=.*;'-e 'base64 -d | sh$' -e '| base64 -d'  -e '" | sh' -e '^#[[:print:]]\{50,\}' "$(pwd)/$shuf.temp1.sh"; then
     while true; do
       if grep -q '=.*;.*=.*;' "$(pwd)/$shuf.temp1.sh"; then
         counter=$((counter + 1))
@@ -18,6 +18,12 @@ dec() {
         sed 's/base64 -d | sh/base64 -d/; s/\[ "$(id -u)" -ne 2000 \]/! true/' "$(pwd)/$shuf.temp1.sh" > "$(pwd)/$shuf.temp2.sh"
         bash "$(pwd)/$shuf.temp2.sh" > "$(pwd)/$shuf.temp1.sh"
         rm "$(pwd)/$shuf.temp2.sh"
+        elif grep -q '| base64 -d' "$(pwd)/$shuf.temp1.sh"; then
+          counter=$((counter + 1))
+          echo "$counter. Base64Eval" >> "$(pwd)/decrypt.log"
+          sed 's/eval "\$/echo "\$/g; s/\[ "$(id -u)" -ne 2000 \]/! true/' "$(pwd)/$shuf.temp1.sh" > "$(pwd)/$shuf.temp2.sh"
+          bash "$(pwd)/$shuf.temp2.sh" > "$(pwd)/$shuf.temp1.sh"
+          rm "$(pwd)/$shuf.temp2"
       elif grep -q '" | sh' "$(pwd)/$shuf.temp1.sh"; then
         counter=$((counter + 1))
         echo "$counter. Other" >> "$(pwd)/decrypt.log"
@@ -80,7 +86,7 @@ find "$input" -maxdepth 1 -type f | while IFS= read -r file; do
   chmod +x "$(pwd)/$shuf.temp1.sh"
   echo "Decrypting $(basename "$file")"
   dec > /dev/null 2>&1
-  if grep -q -e '=.*;.*=.*;' -e 'base64 -d | sh$' -e '" | sh' -e '^#[[:print:]]\{50,\}' "$(pwd)/$shuf.temp1.sh"; then
+  if grep -q -e '=.*;.*=.*;'-e 'base64 -d | sh$' -e '| base64 -d'  -e '" | sh' -e '^#[[:print:]]\{50,\}' "$(pwd)/$shuf.temp1.sh"; then
     dec > /dev/null 2>&1
   fi
   cat "$(pwd)/decrypt.log"
