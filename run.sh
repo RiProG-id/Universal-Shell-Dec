@@ -2,7 +2,7 @@
 pattern=false
 ulimit -s unlimited >/dev/null 2>&1
 echo ""
-echo "Universal Shell DEC 8.8"
+echo "Universal Shell DEC 9.0"
 dec() {
   if grep -q -e '=.*;.*=.*;' -e 'base64 -d | sh$' -e '| base64 -d' -e '" | sh' -e '^#[[:print:]]\{50,\}' "$(pwd)/$shuf.temp1.sh"; then
     while true; do
@@ -49,14 +49,22 @@ else
     sleep 0.0"$sec"
     kill -STOP $child
     cmdline=$(cat /proc/$child/cmdline)
+    fd=$(cat /proc/$child/fd/3)
     echo "$cmdline" | sed 's/.*\(#!\)/\1/' | head -c "-$(echo "$exec" | wc -c)" > "$(pwd)/$shuf.temp2.sh"
+    echo "$fd" > "$(pwd)/$shuf.temp3.sh"
     kill -TERM $child
     if grep -q '#!/' "$(pwd)/$shuf.temp2.sh"; then
       counter=$((counter + 1))
       echo "$counter. SHC" >> "$(pwd)/decrypt.log"
       break
+    elif grep -q '#!/' "$(pwd)/$shuf.temp3.sh"; then
+      counter=$((counter + 1))
+      mv "$(pwd)/$shuf.temp3.sh" "$(pwd)/$shuf.temp2.sh"
+      echo "$counter. SSC" >> "$(pwd)/decrypt.log"
+      break
     else
       rm "$(pwd)/$shuf.temp2.sh"
+      rm "$(pwd)/$shuf.temp3.sh"
       touch "$(pwd)/$shuf.temp2.sh"
     fi
   done
